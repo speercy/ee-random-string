@@ -1,28 +1,13 @@
-<?
-
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
-/*
-=====================================================
- http://stevenpeercy.com
------------------------------------------------------
- Copyright (c) 2010 Steven Peercy
-=====================================================
- File: pi.random_string.php
------------------------------------------------------
- Purpose: Random String plugin
-=====================================================
-
-*/
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 $plugin_info = array(
-					'pi_name'			=> 'Random String',
-					'pi_version'		=> '1.2',
-					'pi_author'			=> 'Steven Peercy',
-					'pi_author_url'		=> 'http://stevenpeercy.com/',
-					'pi_description'	=> 'Returns a random string',
-					'pi_usage'			=> Random_string::usage()
-					);
+	'pi_name'			=> 'Random String',
+	'pi_version'		=> '1.2.1',
+	'pi_author'			=> 'Steven Peercy',
+	'pi_author_url'		=> 'https://github.com/speercy',
+	'pi_description'	=> 'Generate random string for ExpressionEngine',
+	'pi_usage'			=> Random_string::usage()
+);
 
 class Random_string {
 
@@ -30,23 +15,19 @@ class Random_string {
 
 	public function Random_string()
 	{
-		$this->EE =& get_instance();
-		$length = $this->EE->TMPL->fetch_param('length');
-		if(empty($length)) { $length = '8'; }
-
+		$length     = intval(ee()->TMPL->fetch_param('length'));
+		$length     = empty($length) ? 8 : $length;
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$string = '';
+		$string     = '';
 
-		for ($p = 0; $p < $length; $p++) {
-			$string .= $characters[mt_rand(0, (strlen('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')-1))];
+		for ($p = 0; $p < $length; $p++)
+		{
+			$string .= $characters[mt_rand(0, (strlen($characters)-1))];
 		}
 
 		$this->return_data = $string;
-
 	}
-	// End
-    
-	// Usage
+
 	function usage() {
 		ob_start();
 
@@ -54,7 +35,7 @@ class Random_string {
 
 Random String simply gives an output of a random string consisting of numbers 0-9 and upper- and lower-case letters from A-Z.
 
-If the length attribute isn't specified, the plugin will return eight characters.
+If the length attribute is not specified, the plugin will return eight characters.
 
 {exp:random_string}
 
@@ -63,11 +44,9 @@ If the length attribute isn't specified, the plugin will return eight characters
 <?
 
 		$buffer = ob_get_contents();
-		ob_end_clean(); 
+		ob_end_clean();
 		return $buffer;
 	}
-	// End
-
 }
-/* End of file pi.random_string.php */ 
-?>
+
+/* End of file pi.random_string.php */
